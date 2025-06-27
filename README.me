@@ -1,0 +1,192 @@
+Code Plagiarism Detector
+A sophisticated code plagiarism detection tool that uses Abstract Syntax Trees (AST) to analyze code similarity. The tool supports both web interface (Streamlit) and API endpoints (FastAPI).
+Features
+
+🔍 AST-based Analysis: Uses Abstract Syntax Trees for structural code comparison
+📊 Visual AST Display: Interactive visualization of code structure
+🎯 Similarity Scoring: Percentage-based similarity calculation
+🔧 Semantic Analysis: Variable declaration and usage checking
+🌐 Dual Interface: Both web UI and REST API
+⚡ Real-time Analysis: Instant feedback on code similarity
+
+Project Structure
+plagiarism-detector/
+├── backend/
+│   ├── lexer.py          # Tokenization logic
+│   ├── parser.py         # AST generation
+│   ├── semantic.py       # Semantic analysis
+│   ├── ast_compare.py    # AST comparison algorithms
+│   ├── graphviz_utils.py # AST visualization utilities
+│   └── main.py           # FastAPI server
+├── streamlit_app.py      # Streamlit web interface
+├── requirements.txt      # Python dependencies
+└── README.md            # This file
+Installation
+
+Clone the repository
+
+bashgit clone <your-repo-url>
+cd plagiarism-detector
+
+Create virtual environment
+
+bashpython -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+Install dependencies
+
+bashpip install -r requirements.txt
+
+Install Graphviz (system dependency)
+
+Ubuntu/Debian: sudo apt-get install graphviz
+macOS: brew install graphviz
+Windows: Download from Graphviz website
+
+
+
+Usage
+Streamlit Web Interface
+Run the Streamlit app:
+bashstreamlit run streamlit_app.py
+Navigate to http://localhost:8501 in your browser.
+Features:
+
+Code Comparison: Compare two code snippets side by side
+AST Visualization: See the Abstract Syntax Tree structure
+Semantic Analysis: Check for variable declaration issues
+Similarity Scoring: Get percentage-based similarity results
+
+FastAPI Backend Server
+Run the FastAPI server:
+bashcd backend
+python main.py
+The API will be available at http://localhost:8000
+API Endpoints:
+
+POST /api/compare: Compare two code snippets
+
+Example API Request:
+bashcurl -X POST "http://localhost:8000/api/compare" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "code1": "int a = 5; int b = a + 3;",
+       "code2": "int x = 5; int y = x + 3;"
+     }'
+Supported Language Features
+The parser currently supports a C-like syntax with:
+
+Data Types: int, float, string, bool
+Variables: Declaration and assignment
+Operators:
+
+Arithmetic: +, -, *, /, %
+Comparison: ==, !=, <, <=, >, >=
+
+
+Control Structures: if, else, while, for
+Comments: Single line //
+Literals: Numbers, floats, strings
+
+Example Valid Code:
+cint a = 5;
+float b = 3.14;
+string name = "test";
+
+if (a > 3) {
+    int c = a * 2;
+    while (c > 0) {
+        c = c - 1;
+    }
+}
+How It Works
+1. Lexical Analysis
+
+Converts source code into tokens
+Handles keywords, identifiers, operators, literals
+
+2. Parsing
+
+Builds Abstract Syntax Tree (AST) from tokens
+Uses PLY (Python Lex-Yacc) for parsing
+
+3. AST Normalization
+
+Standardizes variable names (var1, var2, etc.)
+Normalizes literal values
+Preserves code structure
+
+4. Similarity Calculation
+
+Uses tree edit distance algorithm
+Compares normalized ASTs
+Returns similarity percentage
+
+5. Semantic Analysis
+
+Checks variable declarations
+Identifies unused variables
+Reports semantic errors and warnings
+
+Similarity Score Interpretation
+
+80-100%: High similarity - potential plagiarism
+60-79%: Moderate similarity - needs review
+40-59%: Some similarity - likely different approaches
+0-39%: Low similarity - likely original code
+
+Troubleshooting
+Common Issues
+
+Parser Error: "Unable to build parser"
+
+Ensure all parser rules are complete
+Check for syntax errors in grammar rules
+Delete parser.out and parsetab.py files if they exist
+
+
+Graphviz Error
+
+Install Graphviz system package
+Ensure it's in your system PATH
+Restart your terminal/IDE after installation
+
+
+Import Errors
+
+Check that all backend files are in the correct directory
+Ensure virtual environment is activated
+Verify all dependencies are installed
+
+
+
+Debug Mode
+For debugging parser issues, you can enable PLY debug mode by modifying parser.py:
+pythonparser = yacc.yacc(debug=True)
+Contributing
+
+Fork the repository
+Create a feature branch
+Make your changes
+Add tests if applicable
+Submit a pull request
+
+Future Enhancements
+
+ Support for more programming languages
+ Advanced similarity algorithms
+ Batch file processing
+ Report generation
+ Integration with code repositories
+ Machine learning-based detection
+
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
+Dependencies
+
+streamlit: Web interface framework
+ply: Python Lex-Yacc parser generator
+graphviz: Graph visualization library
+fastapi: Modern web framework for APIs
+uvicorn: ASGI server for FastAPI
+pydantic: Data validation library
